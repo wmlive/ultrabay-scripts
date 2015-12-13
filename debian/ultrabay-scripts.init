@@ -1,0 +1,83 @@
+#! /bin/sh 
+### BEGIN INIT INFO
+# Provides:          ultrabay-scripts
+# Required-Start:    $local_fs $syslog
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Disables the UltraBay device by default
+### END INIT INFO
+
+set -e
+
+# On ThinkPad models R/T/60/61, while the main disk interface is based
+# on SATA, the UltraBay is still behind a normal ATA interface which is
+# managed via the ata_piix kernel module. This module is normally loaded
+# first by the kernel during system boot, and thus already highjacks and
+# assigns the /dev/sda device file to any UltraBay disk before the actual
+# main disk on the SATA bus is probed.
+#
+# To prevent UltraBay disk devices from being recogized first, blacklist
+# the ata_piix module in /etc/modprobe.d/blacklist-ata_piix.conf and 
+# rebuild the kernel's initramfs. After a reboot, the UltraBay will not
+# be probed first anymore. This ensures that the internal SATA system
+# disk always gets assigned disk device /dev/sda by default. 
+#
+# The UltraBay devices will be probed later during the boot process,
+# once any missing ata_piix kernel module has been loaded here.
+
+SCRIPTNAME="$(basename $0)"
+
+PRODVER=/sys/class/dmi/id/product_version
+
+if [ -e ${PRODVER} ] && [ "$(grep -ic thinkpad ${PRODVER})" = "1" ]
+then
+    if [ "$(cat ${PRODVER} | awk '{print $2}' | grep -Ec '[RT]6[01]')" = "1" ]
+    then
+        [ "$(lsmod | grep -ic ^ata_piix)" = "0" ] && /sbin/modprobe ata_piix
+        echo Detecting presence of UltraBay device ...
+        sleep 1
+    elif [ "$(/bin/ls /sys/devices/platform/dock.? > /dev/null 2>&1; echo $?)" != "0" ]
+    then
+        echo "This Thinkpad is not equipped with an UltraBay."
+        exit 0
+    fi
+else
+    echo "This is not a Thinkpad, nothing to do."
+    exit 0
+fi
+
+eject_ultrabay ()
+{
+if [ "$(/bin/ls /sys/devices/platform/dock.? > /dev/null 2>&1; echo $?)" = "0" ]
+then
+    DOCKDEV=$(dirname $(/bin/grep -l ata_bay /sys/devices/platform/dock.?/type))
+    if [ -z "${DOCKDEV}" ] || [ ! -d ${DOCKDEV} ]; then
+        echo Cannot locate ata_bay dock device
+        exit 0
+    fi
+
+    DEFAULTS=/etc/default/ultrabay-scripts
+    if [ -f ${DEFAULTS} ]
+    then
+        RUNATBOOT="$(grep ^RUNATBOOT ${DEFAULTS} | cut -d= -f2)"
+    fi
+
+    if [ "${RUNATBOOT}" = "Yes" ]
+    then
+        if [ "$(cat ${DOCKDEV}/docked)" != "0" ]
+        then
+            logger ${SCRIPTNAME}: Disabling UltraBay device ${DOCKDEV}
+            /usr/sbin/ultrabay_eject
+        fi
+    fi
+fi
+}
+
+case "$1" in
+*)
+    eject_ultrabay 2>&1
+    ;;
+esac
+
+exit 0

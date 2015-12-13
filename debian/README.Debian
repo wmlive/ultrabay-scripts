@@ -1,0 +1,58 @@
+
+ultrabay-scripts for Debian
+===========================
+
+These scripts serve to safely dock and undock UltraBay devices of
+ThinkPads via udev rules. Also included is a script to switch battery
+discharge order to first drain the main battery in case an UltraBay
+battery has been inserted.
+
+Automatic creation of udev rules
+--------------------------------
+
+To create a suitable udev rules configuration file with the correct
+DEVPATH and KERNEL values matching your actual ThinkPad model, insert the
+UltraBay optical or hard disk drive and reboot the ThinkPad to have the
+inserted UltraBay device properly recognized by the system. Once done,
+just execute the command 'ultrabay_insert -mkrules', in order to recreate
+this file with the appropriate values. If a suitable device is already
+inserted during package installation, this will be done automatically.
+
+Regarding the included init script
+----------------------------------
+
+The init script /etc/init.d/ultrabay-scripts is included to properly
+shutdown and disable potentially power consuming and/or noise producing
+ultrabay device already at boot time, unless configured otherwise in
+/etc/default/ultrabay-scripts to allow it to run normally. To reenable
+any disabled ultrabay device, just eject and reinsert the ultrabay eject
+lever.
+
+ThinkPad models R60/R61, and T60/T61
+------------------------------------
+
+On ThinkPad models R/T/X60/61, while the main disk interface is based
+on SATA, the UltraBay is still behind a normal ATA interface which is
+managed via the ata_piix kernel module. This module is normally loaded
+first by the kernel during system boot, and thus already highjacks and
+assigns the /dev/sda device file to any UltraBay disk before the actual
+main disk on the SATA bus is probed.
+
+To prevent such UltraBay disk devices from being recogized first, just
+blacklist the ata_piix module in /etc/modprobe.d/blacklist-ata_piix.conf
+and rebuild the kernel's initramfs. After a reboot, the UltraBay will
+not be probed first anymore. This ensures that the internal SATA system
+disk always gets assigned disk device /dev/sda by default. UltraBay
+devices will be probed later by /etc/init.d/ultrabay-scripts during the
+boot process, once it has loaded the missing ata_piix kernel module.
+
+ThinkPad models with Ivy Bridge processor (X230, T430, T530, etc.)
+------------------------------------------------------------------
+
+Thinkpads with an Ivy Bridge processor (X230, T430, T530, etc.) are not
+supported by tp-smapi, so the UltraBay battery feature will not work for
+these machines. This would require tpacpi-bat for battery management,
+but has unfortunately not been packaged for Debian yet.
+
+ -- Window Maker Live <wmlive@users.sf.net>  Sat, 11 May 2013 21:21:57 +0200
+

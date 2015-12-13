@@ -1,0 +1,124 @@
+#!/bin/sh
+# postinst script for ultrabay-scripts
+#
+# see: dh_installdeb(1)
+
+set -e
+
+COMMONFUNCTIONS=/usr/share/ultrabay-scripts/ultrabay_common
+
+if [ -f $COMMONFUNCTIONS ]
+then
+    . $COMMONFUNCTIONS
+fi
+
+if [ -x "/etc/init.d/ultrabay-scripts" ]
+then
+    update-rc.d ultrabay-scripts defaults
+fi
+
+if which update-icon-caches >/dev/null 2>&1
+then
+    update-icon-caches /usr/share/icons/battery.png /usr/share/icons/cogwheels.png
+fi
+
+case "$1" in
+  configure)
+
+    create_battery_rules ()
+    {
+    ULTRABATTERYRULES=/etc/udev/rules.d/50-ultrabay-battery.rules
+
+    if [ -f ${ULTRABATTERYRULES} ]
+    then
+        cp -p ${ULTRABATTERYRULES} ${ULTRABATTERYRULES}_previous
+    fi
+
+    if [ "$(/bin/ls /sys/devices/platform/dock.? > /dev/null 2>&1; echo $?)" = "0" ] && \
+       [ -d "$(dirname $(/bin/grep -l battery_bay /sys/devices/platform/dock.?/type))" ]
+    then
+        cat > ${ULTRABATTERYRULES} << UBATRULESCREATION
+# Generic rule to run ultrabay_battery script whenever power supply
+# connector is plugged or unplugged.
+
+SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_NAME}="AC0", ATTR{online}=="0", RUN+="/usr/sbin/ultrabay_battery"
+SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_NAME}="AC0", ATTR{online}=="1", RUN+="/usr/sbin/ultrabay_battery"
+UBATRULESCREATION
+
+	if [ "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)" ]; then
+	  echo "We are chrooted!"
+	else
+	  /sbin/udevadm control --reload-rules
+	fi
+    fi
+    }
+
+    add_wmlive_key ()
+    {
+      if [ "$(apt-key list | grep -c "4096R/2B830BAD 2013-05-10" 2>/dev/null)" != "1" ]
+      then
+        apt-key add - >/dev/null 2>&1 << WMLIVEKEY
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+mQINBFGNJqcBEAC0io6wEaVKMd2OS1rbXWEBQC1WxTutD7jNYqAvDwrry7hkxoaW
+1RGiP5MJHuJhVVYYUsSL1OT7OHzw+EiC+g2TXrG2n/iMvk0BJ+zbvg2aExGr0ciP
+1rX3h+6NQdVFYK0g5cLjYScG8rlxO+OX6afk9zO1C+tiF7+Y876Rji1RzB0v1NeY
+RsDqalsOAEY9g7bFFlJmrUsSXtDgREkum8qfmGhF8hYu3aaKWSsVLXfHblT5Kso3
++s9bp1IB0MDrYeGugTC11w8qv3afENvgjlvDFjGghTCQIHtz+g17xr5Y6EIt4Ux+
+GuDbycUKpKdgA1fzSujjwVHtcWcWGx7UVrejZTbQxWe0cOj7ZZi07IBIoqlmXsMX
+q+0MBrTUf3Dp2z5butMFCZDtDwNKWe+K6zLLTCdu/ayQ0YidysCeJq/kFcDZLilm
+dLIsq7EDCGdK6u+49k9Xr4pc2dtWB0Oe3fYiRCWvkg8jjB0kalpKjvg+L89xsGpU
+8Vr8/FR6oTHaVrxHo/wqIDjQeOm24cWN7VCJ0kaawbyCYQcYV1m4iMREEEGH61lH
+ym90HKldxiakWpSBRZi7vLM7SBydKEdkMHAo/TJXKrARkSm42/WKDmaI7wqNDZvy
+YaGopg5jBJG8sPjiCXXA3NTE8T0+Wi03htpwiHNINKdeXxFmFrpnyEOHXQARAQAB
+tEdXaW5kb3cgTWFrZXIgTGl2ZSAoaHR0cDovL3dtbGl2ZS5zb3VyY2Vmb3JnZS5u
+ZXQpIDx3bWxpdmVAdXNlcnMuc2YubmV0PokCOAQTAQIAIgUCUY0mpwIbAwYLCQgH
+AwIGFQgCCQoLBBYCAwECHgECF4AACgkQlj5MLiuDC60ofRAAjxT7LAgt2YciTZj9
+P9YgVBs6MLAUo6POzgobM2vkHfhQxj+j8VTylhNWFO0snNowPne5M+8SgWEHnmxg
+SzqQRBEvvvcfVqU3YF17jrEV10wHZvzTiDnph1fOcAnstSVmrux6s022CecQBES3
+ojtIv5HlHoYACgN7Kr2dzru4bfX22uiag4RkCPNGI0AOVqK2319N/3ZxZk8ejwYp
+74+hUWbw9XLnQgF/Gc0prTWDGN8RSTKc1e+MuvXn3SJXrsGTKBDVMsMe0TWOafbj
+X1ip6zpe7UMogU9I83XAO7P95lnOR8/mrtVNYTIN7b6WS3Uy2Nazgxy1VbmjMwe6
+woZo3qecOE8HaMP7dIJLG1Ufl6WWOSYOBMNjSmFR1KP8ck6/XAGCB96QiL/Wu+t8
+cyv9HH7ImHQFuc5aQ+Uz76jZVoMn3EFNSqBM7h+3vZZT92995WU6SjA7QXq7r94Q
+kNLiuStXfG8uJywCIi2/p08+sHpxRz3nquBU+mDJR065dL7J0twtMs7A24IZzSnq
+JU6BAJjC/LcbvaskUaviJygNwy/kNWFg3iYkQS45op7m89Lkfzs25yxB41yjZUX3
+VveSYjEJZFN0jFbp1f+cHlI8UjheiCxeIucfFZa8dOiAYw8WQ/vxxjV5om4M7JxP
++Brc6UmHpql5ZohC7P8UdBbxEgM=
+=WXJ4
+-----END PGP PUBLIC KEY BLOCK-----
+WMLIVEKEY
+      fi
+    }
+
+    add_repo_uri ()
+    {
+      APTREPOFILE=/etc/apt/sources.list.d/ultrabay-scripts.list 
+      cat > ${APTREPOFILE} << REPOURIENTRY
+# automatically installed by ultrabay-scripts package
+#deb http://wmlive.sourceforge.net/wmlive jessie main
+deb http://wmlive.sourceforge.net/wmlive wheezy main
+REPOURIENTRY
+    }
+
+    add_wmlive_key
+    add_repo_uri 
+
+    check_if_thinkpad
+
+    if [ "$(/bin/ls /sys/devices/platform/dock.? > /dev/null 2>&1; echo $?)" != "0" ]
+    then
+        echo "This Thinkpad is not equipped with an UltraBay."
+        exit 0
+    else
+        create_battery_rules
+        [ -s /etc/udev/rules.d/50-thinkpad-ultrabay.rules ] && mv -v /etc/udev/rules.d/50-thinkpad-ultrabay.rules /etc/udev/rules.d/50-ultrabay-devices.rules
+        [ -x /usr/sbin/ultrabay_insert ] && [ ! -s /etc/udev/rules.d/50-ultrabay-devices.rules ] && /usr/sbin/ultrabay_insert -mkrules
+    fi
+
+    exit 0
+ ;;
+esac
+
+exit 0
