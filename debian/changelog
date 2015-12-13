@@ -1,3 +1,16 @@
+ultrabay-scripts (0.22-1) unstable; urgency=low
+
+  * Corrected erroneos repo url in postinst script
+
+ -- Paul Seelig <wmlive@rumbero.org>  Sun, 13 Dec 2015 23:42:37 +0100
+
+ultrabay-scripts (0.21-1) unstable; urgency=low
+
+  * Update included GPG key with the one for for new repo location
+    at http://wmlive.rumbero.org/repo/
+
+ -- Paul Seelig <wmlive@rumbero.org>  Sun, 13 Dec 2015 21:38:07 +0100
+
 ultrabay-scripts (0.20-1) unstable; urgency=low
 
   * Change maintainer mail address
