@@ -1,10 +1,10 @@
 Source: ultrabay-scripts
 Section: admin
 Priority: extra
-Maintainer: Window Maker Live <wmlive@users.sf.net>
+Maintainer: Paul Seelig <wmlive@rumbero.org>
 Build-Depends: debhelper (>= 8.0.0)
 Standards-Version: 3.9.4
-Homepage: http://sourceforge.net/projects/wmlive/files/ultrabay-scripts
+Homepage: https://github.com/wmlive/ultrabay-scripts
 
 Package: ultrabay-scripts
 Architecture: all

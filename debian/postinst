@@ -97,8 +97,7 @@ WMLIVEKEY
       APTREPOFILE=/etc/apt/sources.list.d/ultrabay-scripts.list 
       cat > ${APTREPOFILE} << REPOURIENTRY
 # automatically installed by ultrabay-scripts package
-#deb http://wmlive.sourceforge.net/wmlive jessie main
-deb http://wmlive.sourceforge.net/wmlive wheezy main
+deb http://wmlive.sourceforge.net/wmlive jessie main
 REPOURIENTRY
     }
 

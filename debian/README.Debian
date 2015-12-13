@@ -54,5 +54,16 @@ supported by tp-smapi, so the UltraBay battery feature will not work for
 these machines. This would require tpacpi-bat for battery management,
 but has unfortunately not been packaged for Debian yet.
 
- -- Window Maker Live <wmlive@users.sf.net>  Sat, 11 May 2013 21:21:57 +0200
+Inspiration and Maintenance
+---------------------------
+
+Principal inspiration and some code have been taken from the web site
+http://www.thinkwiki.org/wiki/How_to_hotswap_Ultrabay_devices and
+http://www.thinkwiki.org/wiki/Talk:How_to_hotswap_Ultrabay_devices
+
+The code for this package is publically maintained and available from
+https://github.com/wmlive/ultrabay-scripts
+
+ -- Paul Seelig <wmlive@rumbero.org>  Sun, 13 Dec 2015 19:30:05 +0100
+
 

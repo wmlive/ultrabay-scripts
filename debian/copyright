@@ -1,8 +1,7 @@
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: ultrabay-scripts
-Source: http://sourceforge.net/projects/wmlive/files/ultrabay-scripts
+Source: https://github.com/wmlive/ultrabay-scripts
 
-Copyright: 2013 Window Maker Live <wmlive@users.sf.net>
+Copyright: 2013/2015 Paul Seelig <wmlive@rumbero.org>
 
 License: GPL-2+
  This package is free software; you can redistribute it and/or modify

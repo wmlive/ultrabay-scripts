@@ -1,3 +1,11 @@
+ultrabay-scripts (0.20-1) unstable; urgency=low
+
+  * Change maintainer mail address
+
+  * Modify included apt sources list to point to jessie
+
+ -- Paul Seelig <wmlive@rumbero.org>  Sun, 13 Dec 2015 19:21:04 +0100
+
 ultrabay-scripts (0.19-1) unstable; urgency=low
 
   * Make sure update-rc.d is run from postinst to enable init script.
