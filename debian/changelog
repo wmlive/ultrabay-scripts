@@ -1,3 +1,9 @@
+ultrabay-scripts (0.23-1) unstable; urgency=low
+
+  * Remove functions add_wmlive_key and add_repo_uri from postinst
+
+ -- Paul Seelig <wmlive@rumbero.org>  Mon, 14 Dec 2015 21:40:29 +0100
+
 ultrabay-scripts (0.22-1) unstable; urgency=low
 
   * Corrected erroneos repo url in postinst script
