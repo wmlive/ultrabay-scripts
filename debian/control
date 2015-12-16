@@ -8,8 +8,8 @@ Homepage: https://github.com/wmlive/ultrabay-scripts
 
 Package: ultrabay-scripts
 Architecture: all
-Recommends: tlp, acpi-call-source, acpi-call-tools, libnotify-bin
-Depends: ${misc:Depends}, tp-smapi-dkms
+Recommends: tlp, acpi-call-source, acpi-call-tools, libnotify-bin, tp-smapi-dkms
+Depends: ${misc:Depends}
 Description: Management of ThinkPad UltraBay devices and batteries
  Scripts to safely dock and undock UltraBay devices of ThinkPads via
  udev rules. Also includes a script to switch discharge order to first

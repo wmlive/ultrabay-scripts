@@ -1,3 +1,9 @@
+ultrabay-scripts (0.24-1) unstable; urgency=low
+
+  * Turn Depends of tp-smapi-dkms into a less demanding Recommends.
+
+ -- Paul Seelig <wmlive@rumbero.org>  Wed, 16 Dec 2015 17:56:55 +0100
+
 ultrabay-scripts (0.23-1) unstable; urgency=low
 
   * Remove functions add_wmlive_key and add_repo_uri from postinst
