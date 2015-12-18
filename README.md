@@ -1,5 +1,5 @@
 # ultrabay-scripts
-Management of ThinkPad UltraBay devices and batteries
+## Management of ThinkPad UltraBay devices and batteries
 
 Scripts to safely dock and undock UltraBay devices of ThinkPads via udev rules.
 Also includes a script to switch discharge order to first drain the main
