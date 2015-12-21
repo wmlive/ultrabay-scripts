@@ -1,5 +1,5 @@
 # ultrabay-scripts
-## Management of ThinkPad UltraBay devices and batteries
+## Scripts to manage ThinkPad UltraBay devices 
 
 Scripts to safely dock and undock UltraBay devices of ThinkPads via udev rules.
 Also includes a script to switch discharge order to first drain the main
@@ -11,5 +11,11 @@ Thinkpad generation requires tpacpi-bat for battery management, but this has
 unfortunately not been packaged for Debian yet.
 
 This was created in context of and for the Debian based 'Window Maker Live'
-project. The principal scripts probably only work properly on a Debian based
-system.
+project. Inspired by and reusing code from [http://www.thinkwiki.org/wiki/How_to_hotswap_Ultrabay_devices].
+
+Works fine so far for T23 and T6x generation machines. Haven't tested it on
+more modern Thinkpads due to lack of access.
+
+Up to date ready made packages for Debian can be fetched from here:
+[http://wmlive.rumbero.org/repo/]. The packaged scripts probably only work
+properly on a Debian based system.
