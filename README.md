@@ -10,12 +10,12 @@ supported by tp-smapi, the UltraBay battery feature will not work.  This
 Thinkpad generation requires tpacpi-bat for battery management, but this has
 unfortunately not been packaged for Debian yet.
 
-This was created in context of and for the Debian based 'Window Maker Live'
-project. Inspired by and reusing code from [http://www.thinkwiki.org/wiki/How_to_hotswap_Ultrabay_devices].
+This was created in context of and for the Debian based ['Window Maker Live'|(http://wmlive.rumbero.org)]
+project. Inspired by and reusing code from (http://www.thinkwiki.org/wiki/How_to_hotswap_Ultrabay_devices).
 
 Works fine so far for T23 and T6x generation machines. Haven't tested it on
 more modern Thinkpads due to lack of access.
 
 Up to date ready made packages for Debian can be fetched from here:
-[http://wmlive.rumbero.org/repo/]. The packaged scripts probably only work
+http://wmlive.rumbero.org/repo. The packaged scripts probably only work
 properly on a Debian based system.
