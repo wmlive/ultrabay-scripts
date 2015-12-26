@@ -23,6 +23,7 @@ binary-indep:
 	dh_install usr/share/ultrabay-scripts/ultrabay_common usr/share/ultrabay-scripts
 	dh_installdirs -a
 	dh_installdocs
+	dh_installman
 	dh_installchangelogs
 	dh_installinit --no-start
 	dh_install -a

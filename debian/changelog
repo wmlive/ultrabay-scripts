@@ -1,3 +1,17 @@
+ultrabay-scripts (0.26-1) unstable; urgency=low
+
+  * Corrected a packaging oversight
+
+ -- Paul Seelig <wmlive@rumbero.org>  Sat, 26 Dec 2015 04:02:56 +0100
+
+ultrabay-scripts (0.25-1) unstable; urgency=low
+
+  * Enhance init script according to shellcheck recommendations.
+
+  * Added a short man page for each script.
+
+ -- Paul Seelig <wmlive@rumbero.org>  Fri, 25 Dec 2015 11:13:24 +0100
+
 ultrabay-scripts (0.24-1) unstable; urgency=low
 
   * Turn Depends of tp-smapi-dkms into a less demanding Recommends.

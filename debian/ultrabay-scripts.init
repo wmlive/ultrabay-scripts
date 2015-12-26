@@ -30,9 +30,9 @@ SCRIPTNAME="$(basename $0)"
 
 PRODVER=/sys/class/dmi/id/product_version
 
-if [ -e ${PRODVER} ] && [ "$(grep -ic thinkpad ${PRODVER})" = "1" ]
+if [ -e "${PRODVER}" ] && [ "$(grep -ic thinkpad ${PRODVER})" = "1" ]
 then
-    if [ "$(cat ${PRODVER} | awk '{print $2}' | grep -Ec '[RT]6[01]')" = "1" ]
+    if [ "$(awk '{print $2}' ${PRODVER} | grep -Ec '[RT]6[01]')" = "1" ]
     then
         [ "$(lsmod | grep -ic ^ata_piix)" = "0" ] && /sbin/modprobe ata_piix
         echo Detecting presence of UltraBay device ...
@@ -52,13 +52,13 @@ eject_ultrabay ()
 if [ "$(/bin/ls /sys/devices/platform/dock.? > /dev/null 2>&1; echo $?)" = "0" ]
 then
     DOCKDEV=$(dirname $(/bin/grep -l ata_bay /sys/devices/platform/dock.?/type))
-    if [ -z "${DOCKDEV}" ] || [ ! -d ${DOCKDEV} ]; then
+    if [ -z "${DOCKDEV}" ] || [ ! -d "${DOCKDEV}" ]; then
         echo Cannot locate ata_bay dock device
         exit 0
     fi
 
     DEFAULTS=/etc/default/ultrabay-scripts
-    if [ -f ${DEFAULTS} ]
+    if [ -f "${DEFAULTS}" ]
     then
         RUNATBOOT="$(grep ^RUNATBOOT ${DEFAULTS} | cut -d= -f2)"
     fi
