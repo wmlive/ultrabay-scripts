@@ -1,1 +1,1 @@
-We have moved to https://gitlab.com/wmlive/progfetch
+We have moved to https://gitlab.com/wmlive/ultrabay-scripts
