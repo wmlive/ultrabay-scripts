@@ -1,9 +1,0 @@
-# Script to shutdown and disable ultrabay device already during boot time,
-# unless /etc/default/ultrabay-scripts allows it to run. 
-#
-# To reenable a disabled ultrabay device, just eject and reinsert the ultrabay
-# eject lever.
-#
-# Set value to 'Yes' to disable UltraBay device already at boot time:
-
-RUNATBOOT=No
